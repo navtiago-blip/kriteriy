@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>КРИТЕРИЙ — охранные системы</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500&display=swap');
+
+  :root {
+    --green: #15d161;
+    --black: #0a0a0a;
+    --white: #f2f2f0;
+    --metal-light: #c8cec8;
+    --metal-mid: #8a9490;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ── LOGO BADGE ── */
+  .logo-badge {
+    display: inline-block;
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    padding: 5px 10px;
+    text-transform: uppercase;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 40px;
+    background: rgba(10,10,10,0.95);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 36px;
+  }
+
+  nav ul a {
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--white);
+    opacity: 0.55;
+    transition: opacity 0.2s;
+  }
+
+  nav ul a:hover { opacity: 1; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    padding: 120px 40px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0a0a0a 0%, #0e1a0e 30%, #111a11 55%, #0a140a 75%, #080d08 100%);
+  }
+
+  /* Metallic sheen overlay */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 40% at 60% 20%, rgba(21,209,97,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 30% at 20% 70%, rgba(21,209,97,0.08) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  /* Noise texture */
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+    background-size: 180px;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+  }
+
+  .hero-badge {
+    position: absolute;
+    top: 110px;
+    left: 40px;
+  }
+
+  .hero-headline {
+    position: relative;
+    z-index: 2;
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: clamp(72px, 14vw, 180px);
+    line-height: 0.88;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--white);
+    /* Overflow crop — signature move */
+    margin-left: -4px;
+  }
+
+  .hero-headline .line-crop {
+    display: block;
+    overflow: hidden;
+    /* Last line crops at bottom */
+  }
+
+  .hero-headline .line-last {
+    display: block;
+    height: 0.6em; /* crops the descenders */
+    overflow: hidden;
+  }
+
+  .hero-sub {
+    position: relative;
+    z-index: 2;
+    margin-top: 40px;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    max-width: 340px;
+    opacity: 0.65;
+    line-height: 1.7;
+  }
+
+  /* ── TICKER ── */
+  .ticker-wrap {
+    background: var(--black);
+    padding: 14px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .ticker {
+    display: inline-flex;
+    animation: ticker 22s linear infinite;
+  }
+
+  .ticker span {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green);
+    padding: 0 40px;
+  }
+
+  .ticker span.sep {
+    color: rgba(255,255,255,0.2);
+    padding: 0;
+    letter-spacing: 0;
+  }
+
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── SECTION BASE ── */
+  section {
+    padding: 100px 40px;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.35;
+    margin-bottom: 60px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    max-width: 60px;
+    height: 1px;
+    background: currentColor;
+  }
+
+  /* ── ABOUT ── */
+  .about {
+    background: var(--black);
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .about-headline {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: clamp(40px, 6vw, 80px);
+    line-height: 0.9;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
+
+  .about-headline em {
+    font-style: normal;
+    color: var(--green);
+  }
+
+  .about-body {
+    padding-top: 8px;
+  }
+
+  .about-body p {
+    font-size: 15px;
+    line-height: 1.75;
+    opacity: 0.7;
+    margin-bottom: 20px;
+  }
+
+  .about-body p:last-child { margin-bottom: 0; }
+
+  /* ── STATS ── */
+  .stats {
+    background: var(--black);
+    color: var(--white);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .stat-cell {
+    padding: 48px 32px;
+    background: var(--black);
+  }
+
+  .stat-num {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: clamp(42px, 5vw, 68px);
+    line-height: 1;
+    color: var(--green);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.35;
+    margin-top: 12px;
+    line-height: 1.5;
+  }
+
+  /* ── PATTERN SECTION ── */
+  .pattern-section {
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .word-pattern {
+    width: 100%;
+    padding: 60px 0;
+    line-height: 1.15;
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--green);
+    word-spacing: 2px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding-left: 40px;
+    padding-right: 40px;
+    background: var(--black);
+    opacity: 0.9;
+  }
+
+  /* ── SERVICES ── */
+  .services {
+    background: var(--black);
+  }
+
+  .services-list {
+    list-style: none;
+  }
+
+  .service-item {
+    display: grid;
+    grid-template-columns: 48px 1fr auto;
+    align-items: center;
+    gap: 32px;
+    padding: 32px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    transition: background 0.15s;
+  }
+
+  .service-item:first-child { border-top: 1px solid rgba(255,255,255,0.08); }
+
+  .service-num {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    opacity: 0.3;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .service-name {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: clamp(18px, 3vw, 32px);
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+  }
+
+  .service-desc {
+    font-size: 12px;
+    max-width: 280px;
+    text-align: right;
+    opacity: 0.45;
+    line-height: 1.6;
+  }
+
+  /* ── BIG STATEMENT ── */
+  .statement {
+    background: var(--black);
+    color: var(--white);
+    padding: 100px 40px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .statement-text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: clamp(48px, 9vw, 130px);
+    line-height: 0.9;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
+
+  .statement-text .crop {
+    display: block;
+    overflow: hidden;
+    height: 0.65em;
+  }
+
+  .statement-accent {
+    color: var(--green);
+  }
+
+  /* ── HOW ── */
+  .how {
+    background: var(--black);
+  }
+
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .how-cell {
+    background: var(--black);
+    padding: 48px 32px;
+  }
+
+  .how-index {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    opacity: 0.3;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+
+  .how-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+    line-height: 1.1;
+  }
+
+  .how-text {
+    font-size: 13px;
+    line-height: 1.7;
+    opacity: 0.55;
+  }
+
+  /* ── MANIFESTO ── */
+  .manifesto {
+    background: var(--black);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 100px 40px;
+  }
+
+  .manifesto-inner {
+    max-width: 780px;
+  }
+
+  .manifesto blockquote {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: clamp(22px, 3vw, 36px);
+    line-height: 1.3;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    border-left: 3px solid var(--green);
+    padding-left: 32px;
+    margin-bottom: 48px;
+  }
+
+  .manifesto p {
+    font-size: 15px;
+    line-height: 1.8;
+    opacity: 0.6;
+    margin-bottom: 16px;
+    padding-left: 35px;
+  }
+
+  /* ── CONTACTS ── */
+  .contacts {
+    background: var(--black);
+    color: var(--white);
+    padding: 80px 40px;
+  }
+
+  .contacts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: end;
+  }
+
+  .contacts-headline {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: clamp(36px, 6vw, 80px);
+    text-transform: uppercase;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+  }
+
+  .contacts-headline .green { color: var(--green); }
+
+  .contacts-info dt {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.3;
+    margin-bottom: 6px;
+    margin-top: 28px;
+  }
+
+  .contacts-info dt:first-child { margin-top: 0; }
+
+  .contacts-info dd {
+    font-size: 15px;
+    opacity: 0.85;
+    line-height: 1.5;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--black);
+    color: var(--white);
+    padding: 24px 40px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  footer p {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.3;
+  }
+
+  /* ── SVG LOGO in footer ── */
+  .logo-svg-wrap {
+    width: 120px;
+    opacity: 0.9;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    nav ul { display: none; }
+    section { padding: 64px 20px; }
+    .hero { padding: 100px 20px 50px; }
+    .hero-badge { left: 20px; }
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .how-grid { grid-template-columns: 1fr; }
+    .contacts-grid { grid-template-columns: 1fr; gap: 40px; }
+    .service-item { grid-template-columns: 32px 1fr; }
+    .service-desc { display: none; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+    .word-pattern { font-size: 11px; padding-left: 20px; padding-right: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo-badge">КРИТЕРИЙ</div>
+  <ul>
+    <li><a href="#about">О компании</a></li>
+    <li><a href="#services">Системы</a></li>
+    <li><a href="#how">Подход</a></li>
+    <li><a href="#contacts">Контакты</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">
+    <div class="logo-badge">КРИТЕРИЙ</div>
+  </div>
+
+  <div class="hero-headline" aria-label="Ты знаешь что мы видим">
+    <span class="line-crop">ТЫ ЗНАЕШЬ</span>
+    <span class="line-crop">ЧТО МЫ</span>
+    <span class="line-last">ВИДИМ</span>
+  </div>
+
+  <p class="hero-sub">
+    Охранные системы нового поколения.<br>
+    Контроль доступа, видеонаблюдение,<br>
+    защита территорий.
+  </p>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker">
+    <span>НАБЛЮДАЙ</span><span class="sep"> — </span>
+    <span>ЗНАЙ</span><span class="sep"> — </span>
+    <span>ИЩИ</span><span class="sep"> — </span>
+    <span>ВЕРЬ</span><span class="sep"> — </span>
+    <span>ВЗГЛЯДОМ</span><span class="sep"> — </span>
+    <span>КРИТЕРИЙ</span><span class="sep"> — </span>
+    <span>НАБЛЮДАЙ</span><span class="sep"> — </span>
+    <span>ЗНАЙ</span><span class="sep"> — </span>
+    <span>ИЩИ</span><span class="sep"> — </span>
+    <span>ВЕРЬ</span><span class="sep"> — </span>
+    <span>ВЗГЛЯДОМ</span><span class="sep"> — </span>
+    <span>КРИТЕРИЙ</span><span class="sep"> — </span>
+    <!-- duplicate for seamless loop -->
+    <span>НАБЛЮДАЙ</span><span class="sep"> — </span>
+    <span>ЗНАЙ</span><span class="sep"> — </span>
+    <span>ИЩИ</span><span class="sep"> — </span>
+    <span>ВЕРЬ</span><span class="sep"> — </span>
+    <span>ВЗГЛЯДОМ</span><span class="sep"> — </span>
+    <span>КРИТЕРИЙ</span><span class="sep"> — </span>
+    <span>НАБЛЮДАЙ</span><span class="sep"> — </span>
+    <span>ЗНАЙ</span><span class="sep"> — </span>
+    <span>ИЩИ</span><span class="sep"> — </span>
+    <span>ВЕРЬ</span><span class="sep"> — </span>
+    <span>ВЗГЛЯДОМ</span><span class="sep"> — </span>
+    <span>КРИТЕРИЙ</span><span class="sep"> — </span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="section-label">О компании</div>
+  <div class="about-grid">
+    <div>
+      <h2 class="about-headline">
+        Безопасность —<br>
+        это не<br>
+        <em>устройство.</em><br>
+        Это система.
+      </h2>
+    </div>
+    <div class="about-body">
+      <p>
+        «Критерий» — российская компания, которая проектирует, поставляет и обслуживает комплексные охранные системы для промышленных объектов, бизнес-центров, складов и территорий любого масштаба.
+      </p>
+      <p>
+        Мы не продаём отдельные камеры или замки. Мы строим единую инфраструктуру, в которой оборудование, программное обеспечение и регламенты доступа работают как один механизм.
+      </p>
+      <p>
+        Эффективная система безопасности незаметна для авторизованного пользователя — и абсолютно прозрачна для администратора. Это наш принцип.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="section-label" style="color:rgba(255,255,255,0.35); margin-bottom: 48px;">Факты</div>
+  <div class="stats-grid">
+    <div class="stat-cell">
+      <div class="stat-num">1200+</div>
+      <div class="stat-label">Защищённых<br>объектов</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num">14</div>
+      <div class="stat-label">Лет на рынке<br>безопасности</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num">48ч</div>
+      <div class="stat-label">Максимальный срок<br>развёртывания</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num">24/7</div>
+      <div class="stat-label">Мониторинг<br>без остановки</div>
+    </div>
+  </div>
+</section>
+
+<!-- WORD PATTERN -->
+<div class="pattern-section" aria-hidden="true">
+  <div class="word-pattern">
+    НАБЛЮДАЙ НАБЛЮДАЙ ВЕРЬ НАБЛЮДАЙ ИЩИ ВЗГЛЯДОМ НАБЛЮДАЙ ЗНАЙ ИЩИ ВЗГЛЯДОМ ЗНАЙ ИЩИ ВЗГЛЯДОМ ЗНАЙ ВЕРЬ НАБЛЮДАЙ НАБЛЮДАЙ ИЩИ НАБЛЮДАЙ ЗНАЙ ВЕРЬ НАБЛЮДАЙ ВЗГЛЯДОМ ЗНАЙ ИЩИ ВЗГЛЯДОМ ЗНАЙ ВЕРЬ НАБЛЮДАЙ ИЩИ ВЗГЛЯДОМ ЗНАЙ ИЩИ НАБЛЮДАЙ ВЗГЛЯДОМ ЗНАЙ ВЕРЬ НАБЛЮДАЙ НАБЛЮДАЙ ИЩИ ВЗГЛЯДОМ ЗНАЙ ВЕРЬ НАБЛЮДАЙ ИЩИ ВЗГЛЯДОМ ЗНАЙ ИЩИ НАБЛЮДАЙ ВЗГЛЯДОМ ЗНАЙ ВЕРЬ НАБЛЮДАЙ ИЩИ ВЗГЛЯДОМ ЗНАЙ ВЕРЬ НАБЛЮДАЙ НАБЛЮДАЙ ИЩИ ВЗГЛЯДОМ НАБЛЮДАЙ ЗНАЙ ИЩИ ВЗГЛЯДОМ ЗНАЙ ВЕРЬ НАБЛЮДАЙ ВЗГЛЯДОМ ЗНАЙ ИЩИ ВЗГЛЯДОМ ЗНАЙ ВЕРЬ НАБЛЮДАЙ ИЩИ ВЗГЛЯДОМ ЗНАЙ ИЩИ НАБЛЮДАЙ ВЗГЛЯДОМ ЗНАЙ ВЕРЬ НАБЛЮДАЙ НАБЛЮДАЙ ИЩИ ВЗГЛЯДОМ ЗНАЙ ВЕРЬ НАБЛЮДАЙ ИЩИ ВЗГЛЯДОМ ЗНАЙ ИЩИ НАБЛЮДАЙ ВЗГЛЯДОМ ЗНАЙ ВЕРЬ НАБЛЮДАЙ ИЩИ ВЗГЛЯДОМ
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="section-label">Системы и решения</div>
+  <ul class="services-list">
+    <li class="service-item">
+      <span class="service-num">01</span>
+      <span class="service-name">Видеонаблюдение</span>
+      <span class="service-desc">IP-камеры, аналитика движения,<br>архив до 90 дней, удалённый доступ</span>
+    </li>
+    <li class="service-item">
+      <span class="service-num">02</span>
+      <span class="service-name">Контроль доступа</span>
+      <span class="service-desc">СКУД, биометрия, карточные системы,<br>интеграция с учётом рабочего времени</span>
+    </li>
+    <li class="service-item">
+      <span class="service-num">03</span>
+      <span class="service-name">Охранная сигнализация</span>
+      <span class="service-desc">Периметральные и объёмные датчики,<br>тревожные кнопки, GSM-оповещение</span>
+    </li>
+    <li class="service-item">
+      <span class="service-num">04</span>
+      <span class="service-name">Пожарная автоматика</span>
+      <span class="service-desc">ОПС, СОУЭ, интеграция<br>в единый диспетчерский центр</span>
+    </li>
+    <li class="service-item">
+      <span class="service-num">05</span>
+      <span class="service-name">Мониторинговый центр</span>
+      <span class="service-desc">Пульт централизованного наблюдения,<br>реагирование 24/7, отчётность</span>
+    </li>
+  </ul>
+</section>
+
+<!-- BIG STATEMENT -->
+<section class="statement" aria-label="Мы видим всё">
+  <div class="statement-text">
+    <span class="statement-accent">МЫ</span><br>
+    ВИДИМ<br>
+    <span class="crop">ВСЁ</span>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="how" id="how">
+  <div class="section-label">Подход</div>
+  <div class="how-grid">
+    <div class="how-cell">
+      <div class="how-index">Этап 01</div>
+      <div class="how-title">Аудит<br>объекта</div>
+      <p class="how-text">Выезжаем, фиксируем уязвимости, строим модель угроз. Не предлагаем лишнего — только то, что решает реальные задачи объекта.</p>
+    </div>
+    <div class="how-cell">
+      <div class="how-index">Этап 02</div>
+      <div class="how-title">Проектирование<br>системы</div>
+      <p class="how-text">Разрабатываем единую архитектуру: интегрируем видео, доступ и сигнализацию. Все компоненты совместимы и управляются из одной точки.</p>
+    </div>
+    <div class="how-cell">
+      <div class="how-index">Этап 03</div>
+      <div class="how-title">Монтаж<br>и запуск</div>
+      <p class="how-text">Монтируем за 48 часов без остановки работы объекта. Обучаем администраторов. Передаём документацию и регламенты доступа.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section class="manifesto">
+  <div class="manifesto-inner">
+    <div class="section-label">Принципы</div>
+    <blockquote>
+      Охрана объекта — это не набор гаджетов. Это архитектура доверия.
+    </blockquote>
+    <p>
+      Мы не верим в безопасность как продукт. Безопасность — это процесс: постоянное наблюдение, фиксация событий, понимание маршрутов и паттернов. Всё, что происходит на объекте, должно быть видно в любой момент времени.
+    </p>
+    <p>
+      Критерий — это не название охранного предприятия. Это стандарт, которому должна соответствовать каждая наша система. Если объект защищён «Критерием» — значит, он защищён по-настоящему.
+    </p>
+  </div>
+</section>
+
+<!-- CONTACTS -->
+<section class="contacts" id="contacts">
+  <div class="contacts-grid">
+    <div>
+      <div class="section-label" style="color:rgba(255,255,255,0.25);">Связаться</div>
+      <h2 class="contacts-headline">
+        <span class="green">НАЧНИТЕ</span><br>
+        С АУДИТА.<br>
+        ЭТО<br>
+        БЕСПЛАТНО.
+      </h2>
+    </div>
+    <dl class="contacts-info">
+      <dt>Телефон</dt>
+      <dd>+7 (495) 000-00-00</dd>
+      <dt>Почта</dt>
+      <dd>info@kriteriy.com</dd>
+      <dt>Сайт</dt>
+      <dd>kriteriy.com</dd>
+      <dt>Адрес</dt>
+      <dd>Москва, ул. Промышленная, 12</dd>
+      <dt>Режим работы</dt>
+      <dd>Пн–Пт 9:00–18:00<br>Дежурный инженер 24/7</dd>
+    </dl>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo-badge">КРИТЕРИЙ</div>
+  <p>© 2025 ООО «Критерий» — охранные системы</p>
+  <p>kriteriy.com</p>
+</footer>
+
+</body>
+</html>
